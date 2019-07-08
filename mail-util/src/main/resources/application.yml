@@ -1,0 +1,45 @@
+server:
+  port: 9001
+  connectionTimeout: 30s
+
+spring:
+  application:
+    name: echo
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/bop?serverTimezone=GMT
+    username: root
+    password: root
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 15
+      auto-commit: true
+      idle-timeout: 600000
+      pool-name: DatebookHikariCP
+      max-lifetime: 600000
+      connection-timeout: 30000
+      connection-test-query: SELECT 1
+
+  devtools:
+    restart:
+      enabled: true
+
+# MinIO服务
+minio:
+  server:
+    url: http://139.219.6.194:9000
+    accessKey: miniocsbg
+    secretKey: 1qazZAQ!csbg
+    bucket: email-attachment
+
+info:
+  app:
+    name: 邮件服务
+    version: 0.0.1
+
+logging:
+  level:
+    com.beyondsoft.bop.mapper: debug
+
