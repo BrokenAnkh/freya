@@ -1,0 +1,19 @@
+server:
+  port: 9060
+
+spring:
+  application:
+    name: demo
+  cloud:
+    inetutils:
+      ignored-interfaces:
+        - lo
+        - docker*
+        - flannel*
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://localhost:9080/eureka

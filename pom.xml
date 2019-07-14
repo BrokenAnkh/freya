@@ -5,24 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <packaging>pom</packaging>
     <modules>
-        <module>poi-util</module>
-        <module>mail-util</module>
-        <module>minio-util</module>
-        <module>core-util</module>
-        <module>cloud-service</module>
-        <module>boot-service</module>
+        <module>cloud</module>
+        <module>boot</module>
+        <module>component</module>
     </modules>
 
-    <!--== Spring-Boot-Pom ==-->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.6.RELEASE</version>
-        <relativePath/>
-    </parent>
-    <!--== Spring-Boot-Pom ==-->
-
-    <groupId>freya.component</groupId>
+    <groupId>freya.lika</groupId>
     <artifactId>freya</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>freya</name>
@@ -30,10 +18,21 @@
 
     <properties>
         <!-- JDK -->
-        <java.version>1.8</java.version>
+        <java.version>11</java.version>
+        <java.vendor>oracle</java.vendor>
+        <!-- Maven -->
+        <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>utf-8</project.reporting.outputEncoding>
+        <maven.compiler.encoding>utf-8</maven.compiler.encoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <!--        <maven.compiler.release>11</maven.compiler.release>-->
+        <maven-toolchains-plugin.version>3.0.0</maven-toolchains-plugin.version>
+        <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
         <!-- Spring -->
         <spring-security.version>5.1.5.RELEASE</spring-security.version>
         <spring-cloud.version>Greenwich.SR2</spring-cloud.version>
+        <spring-boot.version>2.1.6.RELEASE</spring-boot.version>
         <spring.verison>5.1.6.RELEASE</spring.verison>
         <!-- DataSource -->
         <mybatis.version>2.0.1</mybatis.version>
@@ -68,6 +67,17 @@
             </dependency>
             <!--== Spring-Cloud-Pom V=-->
 
+            <!--== Spring-Boot-Pom A=-->
+            <dependency>
+                <!-- Import dependency management from Spring Boot -->
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--== Spring-Boot-Pom V=-->
+
             <!--== DataSource A=-->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -100,11 +110,6 @@
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${springfox.version}</version>
             </dependency>
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-core</artifactId>
-                <version>${springfox.version}</version>
-            </dependency>
             <!-- Mail -->
             <dependency>
                 <groupId>com.sun.mail</groupId>
@@ -130,4 +135,62 @@
             <!--== Tool V=-->
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <fork>true</fork>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>repackage</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                            <configuration>
+                                <classifier>exec</classifier>
+                            </configuration>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-toolchains-plugin</artifactId>
+                    <version>${maven-toolchains-plugin.version}</version>
+                    <configuration>
+                        <toolchains>
+                            <jdk>
+                                <version>${java.version}</version>
+                                <vendor>${java.vendor}</vendor>
+                            </jdk>
+                        </toolchains>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>toolchain</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-toolchains-plugin</artifactId>
+                <version>${maven-toolchains-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
